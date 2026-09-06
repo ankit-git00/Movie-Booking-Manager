@@ -11,7 +11,7 @@ public class SeatLockManager {
 
     private final Map<Show,Map<Seat, String>> lockedSeats = new ConcurrentHashMap<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
+    private static final long LockTimeout = 500;
 
     public boolean lockSeats(Show show, List<Seat> seats, String userId){
 
@@ -34,8 +34,9 @@ public class SeatLockManager {
                 lockedSeats.get(show).put(seat, userId);
             }
 
-            scheduler.schedule();
+            scheduler.schedule(() -> unlockSeats(show, seats, userId), LockTimeout, TimeUnit.MILLISECONDS);
         }
+        return true;
 
     }
 
@@ -67,11 +68,18 @@ public class SeatLockManager {
     }
 
     public void shutDown(){
+
     System.out.println("Shutting down SeatLockManager");
     scheduler.shutdown();
 
     try{
-        if( !scheduler.awaitTermination(5, TimeUnit.SECONDS))
+        if( !scheduler.awaitTermination(5, TimeUnit.SECONDS)){
+            scheduler.shutdownNow();
+        }
+    }
+    catch (InterruptedException e){
+        scheduler.shutdownNow();
+        Thread.currentThread().interrupt();
     }
     }
 }
