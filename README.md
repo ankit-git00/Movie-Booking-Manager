@@ -2,6 +2,16 @@
 
 A simple Java-based movie booking demo that demonstrates seat locking, booking management, and a payment strategy pattern.
 
+## About
+
+Movie Booking Manager is a lightweight demonstration application implemented in Java that showcases a modular approach to handling movie seat reservations. It is intended as an educational example and a starting point for building more complete booking systems. Key goals and focus areas:
+
+- Demonstrate safe concurrent booking behaviour using temporary seat locks to avoid double-booking.
+- Show how to separate concerns by using a BookingManager/MovieBookingService core with interchangeable payment strategies (Strategy pattern).
+- Provide a small, readable codebase suitable for learning, prototyping, and extension (persistence, REST APIs, UI).
+
+This project is not production-ready — it uses in-memory data structures and simple examples to keep the code easy to understand. You can extend it by adding persistence, authentication, improved error handling, and integration tests.
+
 ## Language
 
 - Java (100%)
