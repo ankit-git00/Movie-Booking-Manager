@@ -15,6 +15,7 @@ public class Seat {
         this.row = row;
         this.col = col;
         this.type = type;
+        this.status = SeatStatus.AVAILABLE;
     }
 
     public SeatStatus getStatus(){

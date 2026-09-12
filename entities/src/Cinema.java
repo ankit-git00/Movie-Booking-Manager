@@ -1,5 +1,6 @@
 package entities.src;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cinema {
@@ -9,11 +10,11 @@ public class Cinema {
     List<Screen> screens;
     List<Show> shows;
 
-    public Cinema(String id, City city, List<Screen> screens, List<Show> shows){
+    public Cinema(String id, City city, List<Screen> screens) {
         this.id = id;
         this.city = city;
         this.screens = screens;
-        this.shows = shows;
+        this.shows = new ArrayList<>();
 
     }
 
@@ -32,6 +33,10 @@ public class Cinema {
 
     public List<Show> getShows(){
         return this.shows;
+    }
+
+    public void addShows(Show show){
+        this.shows.add(show);
     }
 
 

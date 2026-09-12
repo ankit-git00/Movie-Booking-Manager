@@ -1,10 +1,13 @@
 import entities.src.*;
+import strategy.payment.PaymentStrategy;
+import strategy.pricing.PricingStrategy;
 
 import java.awt.image.AreaAveragingScaleFilter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MovieBookingService {
@@ -31,7 +34,7 @@ public class MovieBookingService {
 
 
         this.seatLockManager = new SeatLockManager();
-        this.bookingManager = new BookingManager();
+        this.bookingManager = new BookingManager(seatLockManager);
     }
 
     public static MovieBookingService getInstance(){
@@ -65,15 +68,16 @@ public class MovieBookingService {
 
     }
 
-    public Show addShows(String id, LocalDateTime time, Movie movie, Screen screen, Cinema cinema){
-        Show show = new Show(id, movie, time, screen, cinema);
+    public Show addShows(String id, LocalDateTime time, Movie movie, Screen screen, Cinema cinema, PricingStrategy pricingStrategy){
+        Show show = new Show(id, movie, time, screen, cinema, pricingStrategy);
         this.shows.put(id, show);
         return show;
     }
 
-    public Cinema addCinema(String id, City city, List<Screen> screens, List<Show> shows){
-        Cinema cinema = new Cinema(id, city, screens, shows);
+    public Cinema addCinema(String id, City city, List<Screen> screens){
+        Cinema cinema = new Cinema(id, city, screens);
         this.cinemas.put(id, cinema);
+        return cinema;
     }
 
     public List<Show> findShows(String movieTitle, String cityName){
@@ -87,8 +91,16 @@ public class MovieBookingService {
         return result;
     }
 
+    public Optional<Booking> bookTicket(String userId, String showId, List<Seat>desiredSeats, PaymentStrategy paymentStrategy){
+        return bookingManager.createBooking(users.get(userId
+        ), shows.get(showId), desiredSeats, paymentStrategy);
+    }
 
 
+    public void shutDown(){
+        this.seatLockManager.shutDown();
+        System.out.println("Service has been shut down");
+    }
 
 }
 

@@ -1,5 +1,7 @@
 package entities.src;
 
+import enums.SeatStatus;
+
 import java.util.List;
 
 public class Booking {
@@ -17,6 +19,22 @@ public class Booking {
         this.seats = seats;
         this.payment = payment;
     }
+
+    public void confirmBooking(){
+        for(Seat seat : seats){
+            seat.setStatus(SeatStatus.BOOKED);
+        }
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+
 
     public static class BookingBuilder{
         private String id;

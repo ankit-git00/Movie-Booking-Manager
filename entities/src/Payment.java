@@ -15,4 +15,12 @@ public class Payment {
         this.amount = amount;
         this.transactionId = transactionId;
     }
+
+    public String getStatus(){
+        return status;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
 }
